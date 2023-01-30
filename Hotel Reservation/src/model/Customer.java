@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 public class Customer {
     private String firstname;
     private String Lastname;
-
-
     private String email;
 
     public Customer(String fn, String ln, String em){
@@ -14,12 +12,13 @@ public class Customer {
         this.Lastname = ln;
         //this.email = em;
 
-        String emailRegex = "^(.+)@(.+).(.+)$";
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         String emailR = em;
         boolean res = pattern.matcher(emailR).matches();
         if(res == true){
            this.email = em;
+
         }
         else throw new IllegalArgumentException("Email not Valid");
 

@@ -1,18 +1,24 @@
 package model;
 
+import Service.CustomerService;
+import Service.ReservationService;
+import api.AdminResource;
+import api.HotelResource;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class AdminMenu {
+    private static final CustomerService custObj = CustomerService.getInstance();
+    private static AdminResource adminObj= AdminResource.getInstance();
+    private static ReservationService rsvobj=ReservationService.getInstance();
 
-    //1. See al customers
-    //2. See all rooms
-    //3. See all reservations
-    //4. Add a room
-    //5. Back to Main Menu
-    public void Adminmenu() {
+
+    public static void AdminMenu() {
+
         System.out.println("Welcome to Hotel Reservation Admin Menu.\n");
         System.out.println("--------------------------------------");
         System.out.println("1. See all customers");
@@ -20,34 +26,29 @@ public class AdminMenu {
         System.out.println("3. See all reservations");
         System.out.println("4. Add a room");
         System.out.println("5. Back to Main menu");
-        System.out.println("");
         System.out.println("(Only Press number 1-5)");
-
 
         Scanner scanner = new Scanner(System.in);
         int response = scanner.nextInt();
 
         if((response >= 1) && (response <= 5) ) {
             switch (response) {
-//                case 1:
-//                    ReservationService r = new ReservationService();
-//                    r.serveARoom();
-//                    break;
-//                case 2:
-//                    ReservationService rs = new ReservationService();
-//                    rs.getCustomersReservation();
-//                    break;
+                case 1:
+                    custObj.getAllCustomers();
+                    break;
+                case 2:
+                    rsvobj.getAllRoom();
+                    break;
 //                case 3:
 //                    ReservationService rc = new ReservationService();
 //                    rc.serveARoom();
 //                    break;
                 case 4:
-                    Room rm = new Room();
-                    rm.room();
-                   // rm.setRoomNumber(input);
+                    addroom();
                     break;
                 case 5:
-                    System.out.println("See you Soon.");
+                    MainMenu Mmenu = new MainMenu();
+                    Mmenu.Mainmenu();
                     break;
 
                 default:
@@ -55,5 +56,25 @@ public class AdminMenu {
             }
         }
         else throw new IllegalArgumentException("Input not Valid");
+
+    }
+
+    public static void addroom(){
+        System.out.println("Enter room number: ");
+        Scanner sc = new Scanner(System.in);
+        String inputroomNumber = sc.next();
+
+        System.out.println("Enter room Price: ");
+        Double inputroomPrice = sc.nextDouble();
+
+        System.out.println("Enter room Type: ");
+        String inputroomType = sc.next();
+
+        RoomType roomtype = RoomType.valueOf(inputroomType.toUpperCase());
+        adminObj.addRoom(inputroomNumber, inputroomPrice,roomtype);
+
+
+
+
     }
 }
