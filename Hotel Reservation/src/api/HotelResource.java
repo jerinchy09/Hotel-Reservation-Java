@@ -29,7 +29,12 @@ public class HotelResource {
 
     }
     public Customer getCustomer(String email){
-        return custObj.getCustomer(email);
+            try {
+                return custObj.getCustomer(email);
+            } catch (Exception e) {
+                System.out.println("Failed to retrieve customer");
+                throw new RuntimeException(e);
+            }
 
     }
     public void createACustomer(String firstName, String lastName, String email){

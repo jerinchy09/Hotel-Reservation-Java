@@ -55,7 +55,7 @@ public class AdminResource {
         return null;
 
     }
-    public Collection<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers(){
         return null;
     }
     public void displayAllReservations(){

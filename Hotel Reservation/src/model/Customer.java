@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class Customer {
     private String firstname;
     private String Lastname;
-    private String email;
+    private static String email;
 
     public Customer(String fn, String ln, String em){
         this.firstname = fn;

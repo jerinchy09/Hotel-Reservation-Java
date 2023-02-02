@@ -89,25 +89,54 @@ public class MainMenu {
         scanner.close();
     }
 
+
+
     private static void finsAndReserveARoom(){
         try {
-            System.out.println("Enter your email address: ");
+            System.out.println("Please Enter your Email address: ");
             Scanner scanner = new Scanner(System.in);
-            String email = scanner.next();
 
-            System.out.println("Which room would you like to reserve? Enter room number\n");
-            rsvobj.getAllRoom();
-            String roomnumber = scanner.next();
-            for (Room room : rooms) {
-                if (room.getRoomNumber().contains(roomnumber)) {
+            Customer customer = hotelResource.getCustomer(scanner.next());
 
-//                    Double price = room.getRoomPrice();
-//                    RoomType roomType = room.getRoomType();
-                    System.out.println(" got it " );
-                }
-                System.out.println(room.getRoomPrice());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
+            System.out.println("Enter check-in date - format yyyy-mm-dd");
+            String checkIn = scanner.next();
+            Date checkInDate = dateFormat.parse(checkIn);
+            System.out.println("Enter check-Out date - format yyyy-mm-dd");
+            String checkOut = scanner.next();
+            Date checkOutDate = dateFormat.parse(checkOut);
 
+            List<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+
+            if (!availableRooms.isEmpty()) {
+                System.out.println("Which room would you like to book? Enter room Id");
+                String roomId = scanner.next();
+                IRoom room = hotelResource.getRoom(roomId);
+
+                hotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
+                System.out.println("Room "+roomId+ " is booked");
             }
+
+
+
+
+//            System.out.println("Enter your email address: ");
+//            Scanner scanner = new Scanner(System.in);
+//            String email = scanner.next();
+//
+//            System.out.println("Which room would you like to reserve? Enter room number\n");
+//            rsvobj.getAllRoom();
+//            String roomnumber = scanner.next();
+//            for (Room room : rooms) {
+//                if (room.getRoomNumber().contains(roomnumber)) {
+//
+////                    Double price = room.getRoomPrice();
+////                    RoomType roomType = room.getRoomType();
+//                    System.out.println(" got it " );
+//                }
+//                System.out.println(room.getRoomPrice());
+//
+//            }
 
 
 

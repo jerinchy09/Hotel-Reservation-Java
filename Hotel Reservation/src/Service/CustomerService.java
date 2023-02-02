@@ -3,13 +3,12 @@ package Service;
 import model.Customer;
 import model.MainMenu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class CustomerService {
     private static CustomerService custObj;
+    //private Map<String, Customer> customerMap = new HashMap<>();
+
     private static List<Customer> customers = new ArrayList<>();
     private CustomerService(){
 
@@ -31,8 +30,11 @@ public class CustomerService {
         }
     }
 
-    public Customer getCustomer(String customerEmail){
-        return null;
+    public Customer getCustomer(String customerEmail) throws Exception {
+        if (customerEmail == null) {
+            throw new Exception("String is null");
+        }
+       return customers.get(customerEmail);
     }
     public List<Customer> getAllCustomers(){
         for(Customer customer: customers){

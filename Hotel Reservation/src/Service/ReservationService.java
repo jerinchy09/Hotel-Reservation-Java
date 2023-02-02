@@ -53,15 +53,18 @@ public class ReservationService {
     }
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
         if(checkInDate.before(new Date())|| checkOutDate.before(checkInDate)){
-            return null;
+            System.out.println("Wrong Date");
         }
 //        if (IfDatesAvailable(room, checkInDate, checkOutDate)) {
 //            Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
 //            reservations.add(reservation);
 //            return reservation;
 //        }
+        Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
+        reservations.add(reservation);
+        System.out.println("Room booked!");
+        return reservation;
 
-        return null;
     }
     public List<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
         ArrayList<IRoom> noRooms = new ArrayList<>();
@@ -71,10 +74,10 @@ public class ReservationService {
         if(CheckInDate.equals(CheckOutDate)|| CheckInDate.after(CheckOutDate)){
             return noRooms;
         }
-        List<IRoom> unavailableRoom = new ArrayList<>();
+       List<IRoom> unavailableRoom = new ArrayList<>();
 
-//        List<IRoom> unavailableRoom = reservations.stream().filter(r-> (CheckOutDate.after(r.getCheckInDate()))&& CheckInDate.before(r.getCheckOutDate())).map(Reservation::getRoom).collect(Collectors.toCollection(ArrayList::new));
-//        return rooms.values().stream().filter(r->!unavailableRoom.contains((r)).collect(Collectors.toCollection(ArrayList::new)));
+       // List<IRoom> unavailableRoom = reservations.stream().filter(r-> (CheckOutDate.after(r.getCheckInDate()))&& CheckInDate.before(r.getCheckOutDate())).map(Reservation::getRoom).collect(Collectors.toCollection(ArrayList::new));
+       // return rooms.values().stream().filter(r->!unavailableRoom.contains((r)).collect(Collectors.toCollection(ArrayList::new)));
 
         return unavailableRoom;
     }
