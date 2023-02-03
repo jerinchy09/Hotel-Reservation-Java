@@ -17,6 +17,14 @@ public class ReservationService {
     private static List<Room> rooms = new ArrayList<>();
     private static List<Reservation> reservations = new ArrayList<>();
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
     public static ReservationService getInstance(){
         if(resObj == null) {
             resObj = new ReservationService();
@@ -52,9 +60,9 @@ public class ReservationService {
         return rooms;
     }
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
-        if(checkInDate.before(new Date())|| checkOutDate.before(checkInDate)){
-            System.out.println("Wrong Date");
-        }
+//        if(checkInDate.before(new Date())|| checkOutDate.before(checkInDate)){
+//            System.out.println("Wrong Date");
+//        }
 //        if (IfDatesAvailable(room, checkInDate, checkOutDate)) {
 //            Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
 //            reservations.add(reservation);
@@ -81,10 +89,10 @@ public class ReservationService {
 
         return unavailableRoom;
     }
-    public List<Reservation> getCustomersReservation(Customer customer){
-        return null;
-
-    }
+//    public List<Reservation> getCustomersReservation(Customer customer){
+//        return reservations;
+//
+//    }
     public void printAllReservation(){
 
     }

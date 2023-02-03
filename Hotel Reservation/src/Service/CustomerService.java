@@ -7,9 +7,9 @@ import java.util.*;
 
 public class CustomerService {
     private static CustomerService custObj;
-    //private Map<String, Customer> customerMap = new HashMap<>();
+    private Map<String, Customer> customerMap = new HashMap<>();
 
-    private static List<Customer> customers = new ArrayList<>();
+    //private static List<Customer> customers = new ArrayList<>();
     private CustomerService(){
 
     }
@@ -22,7 +22,7 @@ public class CustomerService {
     public void addCustomer(String fn, String ln, String email){
         try{
             Customer customer = new Customer(fn, ln, email);
-            customers.add(customer);
+            customerMap.put(customer.getEmail(), customer);
             System.out.println("Customer Added");
             MainMenu.Mainmenu();
         }catch(IllegalArgumentException e){
@@ -34,16 +34,27 @@ public class CustomerService {
         if (customerEmail == null) {
             throw new Exception("String is null");
         }
-       return customers.get(customerEmail);
+       return customerMap.get(customerEmail);
+//        Collection<Customer> collectionValues = customerMap.values();
+//
+//
+//       // System.out.println("<------OutPut before modification------>\n");
+//        for(Customer cus: collectionValues){
+//            System.out.println(cus);
+//        }
+//        return collectionValues;
     }
-    public List<Customer> getAllCustomers(){
-        for(Customer customer: customers){
-            System.out.println("Firstname: "+ customer.getFirstname()+
-                    " Lastname: "+customer.getLastname()+
-                    " Email: "+customer.getEmail());
+    public Map<String, Customer> getAllCustomers(){
+        for (Map.Entry<String, Customer> cus : customerMap.entrySet()){
+               for(int i = 0; i<customerMap.size();i++) {
+                   // for(Customer customer: customers){
+                   System.out.println("Customer no."+(i+1)+"\n " + cus.getValue());
+//                    " Lastname: "+customer.getLastname()+
+//                    " Email: "+customer.getEmail());
+               }
         }
 
-        return customers;
+        return customerMap;
     };
 
 

@@ -1,5 +1,6 @@
 package model;
 
+import Service.CustomerService;
 import Service.ReservationService;
 import api.HotelResource;
 
@@ -10,6 +11,9 @@ import java.util.regex.Pattern;
 public class MainMenu {
     private static HotelResource hotelResource=HotelResource.getInstance();
     private static ReservationService rsvobj=ReservationService.getInstance();
+    private static CustomerService custobj=CustomerService.getInstance();
+
+
     private static List<Room> rooms = new ArrayList<>();
 
     public static void Mainmenu() {
@@ -35,9 +39,6 @@ public class MainMenu {
                             finsAndReserveARoom();
                             break;
                         case 2:
-                        //                    ReservationService rs = new ReservationService();
-                        //                    rs.getCustomersReservation();
-                        //                    break;
                             seeMyReservation();
                             break;
                         case 3:
@@ -63,7 +64,16 @@ public class MainMenu {
         }
 
     }
-    public static void seeMyReservation(){}
+    public static void seeMyReservation(){
+        System.out.println("Enter email address: ");
+        Scanner scanner = new Scanner(System.in);
+        Customer customer = hotelResource.getCustomer(scanner.next());
+
+        System.out.println(rsvobj.getReservations());
+        System.out.println(customer.getFirstname()+" "+customer.getLastname() +"has booked Room ");
+
+
+    }
     public static boolean confirmReservation(Optional<IRoom> roomChosen){
 //        Scanner sc = new Scanner(System.in);
 //        String choice = null;
@@ -89,8 +99,6 @@ public class MainMenu {
         scanner.close();
     }
 
-
-
     private static void finsAndReserveARoom(){
         try {
             System.out.println("Please Enter your Email address: ");
@@ -106,57 +114,21 @@ public class MainMenu {
             String checkOut = scanner.next();
             Date checkOutDate = dateFormat.parse(checkOut);
 
-            List<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+            //List<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
 
-            if (!availableRooms.isEmpty()) {
+          //  if (!availableRooms.isEmpty()) {
                 System.out.println("Which room would you like to book? Enter room Id");
+                rsvobj.getAllRoom();
                 String roomId = scanner.next();
                 IRoom room = hotelResource.getRoom(roomId);
 
-                hotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
-                System.out.println("Room "+roomId+ " is booked");
-            }
-
-
-
-
-//            System.out.println("Enter your email address: ");
-//            Scanner scanner = new Scanner(System.in);
-//            String email = scanner.next();
-//
-//            System.out.println("Which room would you like to reserve? Enter room number\n");
-//            rsvobj.getAllRoom();
-//            String roomnumber = scanner.next();
-//            for (Room room : rooms) {
-//                if (room.getRoomNumber().contains(roomnumber)) {
-//
-////                    Double price = room.getRoomPrice();
-////                    RoomType roomType = room.getRoomType();
-//                    System.out.println(" got it " );
-//                }
-//                System.out.println(room.getRoomPrice());
-//
-//            }
-
-
-
-            //IRoom bookroom= new Room();
-          //  bookroom.getRoomNumber();
-//            System.out.println("Enter check-in Date: (Please use this format dd/mm/yy) ");
-//            String checkinDate = scanner.next();
-//            SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
-//            Date checkInDate = dateF.parse(checkinDate);
-//
-//            System.out.println("Enter check-out Date: ");
-//            String checkoutDate = scanner.next();
-//            Date checkOutDate = dateF.parse(checkoutDate);
-//
-//            hotelResource.bookARoom(email, roomnumber, checkinDate, checkoutDate);
-
+                hotelResource.bookARoom(   customer.getEmail(), room, checkInDate, checkOutDate);
+                System.out.println("Room "+roomId+ " is booked for " + custobj.getCustomer(customer.getEmail()));
 
         } catch (Exception e) {
             System.out.println("Exception is: " + e.toString());
         }
     }
+
 
 }
