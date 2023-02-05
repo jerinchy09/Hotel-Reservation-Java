@@ -16,6 +16,7 @@ public class AdminMenu {
     private static AdminResource adminObj= AdminResource.getInstance();
     private static ReservationService rsvobj=ReservationService.getInstance();
 
+    private static HotelResource hotelResource=HotelResource.getInstance();
 
     public static void AdminMenu() {
 
@@ -34,15 +35,15 @@ public class AdminMenu {
         if((response >= 1) && (response <= 5) ) {
             switch (response) {
                 case 1:
-                    custObj.getAllCustomers();
+                    adminObj.displayAllCustomers();
                     break;
                 case 2:
-                    rsvobj.getAllRoom();
+
+                    adminObj.getAllRooms();
                     break;
-//                case 3:
-//                    ReservationService rc = new ReservationService();
-//                    rc.serveARoom();
-//                    break;
+                case 3:
+                    seeAllReservation();
+                    break;
                 case 4:
                     addroom();
                     break;
@@ -72,9 +73,9 @@ public class AdminMenu {
 
         RoomType roomtype = RoomType.valueOf(inputroomType.toUpperCase());
         adminObj.addRoom(inputroomNumber, inputroomPrice,roomtype);
-
-
-
+    }
+    public static void seeAllReservation(){
+        adminObj.displayAllReservations();
 
     }
 }

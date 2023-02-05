@@ -49,9 +49,10 @@ public class HotelResource {
         return resObj.reserveARoom(getCustomer(customerEmail),room,checkInDate,checkOutDate);
 
     }
-    public Collection<Reservation> getCustomersReservations(String customerEmail){
-        return null;
+    public Collection<Reservation> getCustomersReservations(String customerEmail) throws Exception{
 
+            Customer customer = custObj.getCustomer(customerEmail);
+            return resObj.getCustomersReservation(customer);
     }
     public List<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
         return resObj.findRooms(checkIn, checkOut);

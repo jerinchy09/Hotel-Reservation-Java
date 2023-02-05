@@ -44,17 +44,17 @@ public class CustomerService {
 //        }
 //        return collectionValues;
     }
-    public Map<String, Customer> getAllCustomers(){
-        for (Map.Entry<String, Customer> cus : customerMap.entrySet()){
-               for(int i = 0; i<customerMap.size();i++) {
-                   // for(Customer customer: customers){
-                   System.out.println("Customer no."+(i+1)+"\n " + cus.getValue());
-//                    " Lastname: "+customer.getLastname()+
-//                    " Email: "+customer.getEmail());
-               }
-        }
+    public Collection<Customer> getAllCustomers(){
+//        for (Map.Entry<String, Customer> cus : customerMap.entrySet()){
+//               for(int i = 0; i<customerMap.size();i++) {
+//                   // for(Customer customer: customers){
+//                   System.out.println("Customer no."+(i+1)+"\n " + cus.getValue());
+////                    " Lastname: "+customer.getLastname()+
+////                    " Email: "+customer.getEmail());
+//               }
+//        }
 
-        return customerMap;
+        return customerMap.values();
     };
 
 

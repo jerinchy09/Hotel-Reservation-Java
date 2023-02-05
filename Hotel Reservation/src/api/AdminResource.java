@@ -2,9 +2,7 @@ package api;
 
 import Service.CustomerService;
 import Service.ReservationService;
-import model.Customer;
-import model.IRoom;
-import model.RoomType;
+import model.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.List;
 public class AdminResource {
     private static AdminResource adminResObj;
     private static final ReservationService resvObj = ReservationService.getInstance();
+    private static final CustomerService cusObj = CustomerService.getInstance();
 
     public static void getAdminResObj(AdminResource adminResObj) {
         AdminResource.adminResObj = adminResObj;
@@ -51,14 +50,24 @@ public class AdminResource {
             }
         });
     }
-    public List<IRoom> getAllRooms(){
-        return null;
+    public Collection<Room> getAllRooms(){
+
+        return resvObj.getRooms();
 
     }
-    public List<Customer> getAllCustomers(){
-        return null;
+    public Collection<Customer> getAllCustomers(){
+
+        return cusObj.getAllCustomers();
     }
     public void displayAllReservations(){
-
+        //resvObj.getReservations();
+        for(Reservation res : resvObj.getReservations()) {
+            System.out.println(res);
+        }
+    }
+    public void displayAllCustomers(){
+        for(Customer cus : getAllCustomers()) {
+            System.out.println(cus);
+        }
     }
 }
