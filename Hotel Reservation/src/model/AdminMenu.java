@@ -20,7 +20,7 @@ public class AdminMenu {
 
     public static void AdminMenu() {
 
-        System.out.println("Welcome to Hotel Reservation Admin Menu.\n");
+        System.out.println("Welcome to Hotel Reservation Admin Menu.");
         System.out.println("--------------------------------------");
         System.out.println("1. See all customers");
         System.out.println("2. See all rooms");

@@ -54,7 +54,7 @@ public class HotelResource {
             Customer customer = custObj.getCustomer(customerEmail);
             return resObj.getCustomersReservation(customer);
     }
-    public List<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
+    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
         return resObj.findRooms(checkIn, checkOut);
 
     }

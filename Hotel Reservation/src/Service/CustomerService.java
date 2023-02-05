@@ -9,7 +9,6 @@ public class CustomerService {
     private static CustomerService custObj;
     private Map<String, Customer> customerMap = new HashMap<>();
 
-    //private static List<Customer> customers = new ArrayList<>();
     private CustomerService(){
 
     }
@@ -35,25 +34,9 @@ public class CustomerService {
             throw new Exception("String is null");
         }
        return customerMap.get(customerEmail);
-//        Collection<Customer> collectionValues = customerMap.values();
-//
-//
-//       // System.out.println("<------OutPut before modification------>\n");
-//        for(Customer cus: collectionValues){
-//            System.out.println(cus);
-//        }
-//        return collectionValues;
+
     }
     public Collection<Customer> getAllCustomers(){
-//        for (Map.Entry<String, Customer> cus : customerMap.entrySet()){
-//               for(int i = 0; i<customerMap.size();i++) {
-//                   // for(Customer customer: customers){
-//                   System.out.println("Customer no."+(i+1)+"\n " + cus.getValue());
-////                    " Lastname: "+customer.getLastname()+
-////                    " Email: "+customer.getEmail());
-//               }
-//        }
-
         return customerMap.values();
     };
 

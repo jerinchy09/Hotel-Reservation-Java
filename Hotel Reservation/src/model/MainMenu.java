@@ -6,9 +6,6 @@ import api.HotelResource;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Pattern;
-
-import static java.lang.System.exit;
 
 public class MainMenu {
     private static HotelResource hotelResource=HotelResource.getInstance();
@@ -73,15 +70,6 @@ public class MainMenu {
 
     }
     public static boolean confirmReservation(Optional<IRoom> roomChosen){
-//        Scanner sc = new Scanner(System.in);
-//        String choice = null;
-//        if(roomChosen.isPresent()){
-//            System.out.println("Book? Enter y or n");
-//            do{
-//
-//            }while();
-//
-//        }
         return false;
     }
     public static void createAnAccount(){
@@ -112,18 +100,14 @@ public class MainMenu {
             String checkOut = scanner.next();
             Date checkOutDate = dateFormat.parse(checkOut);
 
-            //List<IRoom> availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+            System.out.println("Which room would you like to book? Enter room Id");
 
-          //  if (!availableRooms.isEmpty()) {
-                System.out.println("Which room would you like to book? Enter room Id");
-                //rsvobj.getAllRoom();
+            System.out.println(hotelResource.findARoom(checkInDate,checkOutDate));
+            String roomId = scanner.next();
+            IRoom room = hotelResource.getRoom(roomId);
 
-                hotelResource.findARoom(checkInDate,checkOutDate);
-                String roomId = scanner.next();
-                IRoom room = hotelResource.getRoom(roomId);
-
-                hotelResource.bookARoom(  customer.getEmail(), room, checkInDate, checkOutDate);
-                System.out.println("Room "+roomId+ " is booked for " + custobj.getCustomer(customer.getEmail()));
+            hotelResource.bookARoom(  customer.getEmail(), room, checkInDate, checkOutDate);
+            System.out.println("Room "+roomId+ " is booked for " + custobj.getCustomer(customer.getEmail()));
 
         } catch (Exception e) {
             System.out.println("Exception is: " + e.toString());

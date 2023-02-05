@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReservationService {
     private static ReservationService resObj;
@@ -49,23 +50,9 @@ public class ReservationService {
         return null;
 
     }
-//    public Collection<IRoom> getAllRoom(){
-//        for(Room rm: rooms){
-//            System.out.println("Room number: "+ rm.getRoomNumber() +
-//                    " Room Price: "+rm.getRoomPrice() +
-//                    " Room Type: "+ rm.getRoomType());
-//        }
-//        return rooms;
-//    }
+
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
-//        if(checkInDate.before(new Date())|| checkOutDate.before(checkInDate)){
-//            System.out.println("Wrong Date");
-//        }
-//        if (IfDatesAvailable(room, checkInDate, checkOutDate)) {
-//            Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
-//            reservations.add(reservation);
-//            return reservation;
-//        }
+
         Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
         reservations.add(reservation);
         System.out.println("Room booked!");
@@ -73,45 +60,27 @@ public class ReservationService {
         return reservation;
 
     }
-    public List<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
-        //ArrayList<IRoom> noRooms = new ArrayList<>();
-//        if(CheckInDate.before(new Date())|| CheckOutDate.before(new Date())){
-//            System.out.println("No rooms");
-//           // return noRooms;
-//        }
-//        if(CheckInDate.equals(CheckOutDate)|| CheckInDate.after(CheckOutDate)){
-//            //return noRooms;
-//            System.out.println("No rooms");
-//
-//        }
+    public Collection<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
         List<IRoom> availableRoom = new ArrayList<>();
         List<Reservation> filterReservations = new ArrayList<>();
-
         //.stream
         for(Reservation res: reservations){
-
             //.filter
             if((CheckOutDate.after(res.getCheckInDate())) && CheckInDate.before(res.getCheckOutDate())){
                 filterReservations.add(res);
+                System.out.println("reservation Added");
             }
             else System.out.println("Please enter a valid date for check-in and check-out");
         }
         List<IRoom> mapRoom = new ArrayList<>();
         //.map(Reservation::getRoom)
-        for(Reservation filRes: filterReservations){
-            System.out.println(mapRoom.add(filRes.getRoom()));
-
+        for(Reservation mapRes: filterReservations){
+            System.out.println(mapRoom.add(mapRes.getRoom()));
         }
-//        List<IRoom> unavailableRoom = reservations.stream()
-//                .filter(r-> (CheckOutDate.after(r.getCheckInDate())) && CheckInDate.before(r.getCheckOutDate()))
-//                .map(Reservation::getRoom)
-//                .collect(Collectors.toCollection(ArrayList::new));
-      //  return rooms.values().stream().filter(r->!unavailableRoom.contains((r)).collect(Collectors.toCollection(ArrayList::new)));
-        if(!rooms.contains(mapRoom)){
 
-        }
-        else{System.out.println("No room Available");}
-        return availableRoom;
+            return rooms.stream()
+                    .filter(r->!availableRoom.contains(r))
+                    .collect(Collectors.toCollection(ArrayList::new));
     }
     public Collection<Reservation> getCustomersReservation(Customer customer){
         List<Reservation> customerReservation = new ArrayList<>();
@@ -128,5 +97,4 @@ public class ReservationService {
 
         return reservations;
     }
-
 }
