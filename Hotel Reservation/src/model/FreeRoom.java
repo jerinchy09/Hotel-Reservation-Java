@@ -10,7 +10,6 @@ public class FreeRoom extends Room {
         super(roomNumber, (double) 0, roomType);
 
     }
-
     @Override
     public String toString() {
         return super.toString();

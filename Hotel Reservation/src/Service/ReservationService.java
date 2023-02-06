@@ -2,23 +2,20 @@ package Service;
 
 import model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReservationService {
     private static ReservationService resObj;
     private static List<Room> rooms = new ArrayList<>();
-    private static List<Reservation> reservations = new ArrayList<>();
+    private final static Set<Reservation> reservations = new HashSet<>();
 
     public List<Room> getRooms() {
         System.out.println(rooms);
         return rooms;
     }
 
-    public List<Reservation> getReservations() {
+    public Set<Reservation> getReservations() {
         return reservations;
     }
 
@@ -34,6 +31,7 @@ public class ReservationService {
 
             Room rm = new Room(room.getRoomNumber(), room.getRoomPrice(), room.getRoomType());
             rooms.add(rm);
+
             System.out.println("Room Added" );
             AdminMenu.AdminMenu();
 
@@ -57,30 +55,28 @@ public class ReservationService {
         reservations.add(reservation);
         System.out.println("Room booked!");
         System.out.println(reservation);
+
         return reservation;
 
     }
     public Collection<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
-        List<IRoom> availableRoom = new ArrayList<>();
-        List<Reservation> filterReservations = new ArrayList<>();
-        //.stream
-        for(Reservation res: reservations){
-            //.filter
-            if((CheckOutDate.after(res.getCheckInDate())) && CheckInDate.before(res.getCheckOutDate())){
-                filterReservations.add(res);
-                System.out.println("reservation Added");
-            }
-            else System.out.println("Please enter a valid date for check-in and check-out");
-        }
-        List<IRoom> mapRoom = new ArrayList<>();
-        //.map(Reservation::getRoom)
-        for(Reservation mapRes: filterReservations){
-            System.out.println(mapRoom.add(mapRes.getRoom()));
-        }
+//        ArrayList<IRoom> noRooms = new ArrayList<>();
+//        if(CheckInDate.before(new Date()) || CheckOutDate.before(new Date())){
+//            return noRooms;
+//        }
+//        if(CheckInDate.after(CheckOutDate) || CheckOutDate.equals(CheckInDate)){
+//            return noRooms;
+//        }
 
-            return rooms.stream()
-                    .filter(r->!availableRoom.contains(r))
-                    .collect(Collectors.toCollection(ArrayList::new));
+        List<IRoom> unavailableRooms = reservations.stream()
+                                                  .filter(r->CheckOutDate.after(r.getCheckInDate()) && CheckInDate.before(r.getCheckOutDate()))
+                                                  .map(Reservation::getRoom)
+                                                  .collect(Collectors.toCollection(ArrayList::new));
+        return rooms.stream()
+                .filter(r->!unavailableRooms.contains(r))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
     }
     public Collection<Reservation> getCustomersReservation(Customer customer){
         List<Reservation> customerReservation = new ArrayList<>();
@@ -91,10 +87,15 @@ public class ReservationService {
             }
         }
         return customerReservation;
-
     }
-    public Collection<Reservation> printAllReservation() {
 
-        return reservations;
+    public boolean isRoomAvailable(String roomNumber){
+        for (Room room : rooms) {
+            if (room.getRoomNumber() == roomNumber && room.isAvailable()) {
+                return true;
+            }
+        }
+        return false;
     }
+
 }

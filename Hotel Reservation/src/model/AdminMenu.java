@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
 
 public class AdminMenu {
     private static final CustomerService custObj = CustomerService.getInstance();
-    private static AdminResource adminObj= AdminResource.getInstance();
-    private static ReservationService rsvobj=ReservationService.getInstance();
+    private static AdminResource ADMIN_RESOURCE= AdminResource.getInstance();
+    //private static ReservationService rsvobj=ReservationService.getInstance();
 
-    private static HotelResource hotelResource=HotelResource.getInstance();
+    private static HotelResource HOTEL_RESOURCE=HotelResource.getInstance();
 
     public static void AdminMenu() {
 
@@ -35,11 +35,11 @@ public class AdminMenu {
         if((response >= 1) && (response <= 5) ) {
             switch (response) {
                 case 1:
-                    adminObj.displayAllCustomers();
+                    ADMIN_RESOURCE.displayAllCustomers();
                     break;
                 case 2:
 
-                    adminObj.getAllRooms();
+                    ADMIN_RESOURCE.getAllRooms();
                     break;
                 case 3:
                     seeAllReservation();
@@ -71,11 +71,12 @@ public class AdminMenu {
         System.out.println("Enter room Type: ");
         String inputroomType = sc.next();
 
+
         RoomType roomtype = RoomType.valueOf(inputroomType.toUpperCase());
-        adminObj.addRoom(inputroomNumber, inputroomPrice,roomtype);
+        ADMIN_RESOURCE.addRoom(inputroomNumber, inputroomPrice,roomtype);
     }
     public static void seeAllReservation(){
-        adminObj.displayAllReservations();
+        ADMIN_RESOURCE.displayAllReservations();
 
     }
 }

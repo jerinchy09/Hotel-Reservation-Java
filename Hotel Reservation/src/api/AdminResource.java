@@ -9,8 +9,8 @@ import java.util.List;
 
 public class AdminResource {
     private static AdminResource adminResObj;
-    private static final ReservationService resvObj = ReservationService.getInstance();
-    private static final CustomerService cusObj = CustomerService.getInstance();
+    private static final ReservationService RESERVATION_SERVICE = ReservationService.getInstance();
+    private static final CustomerService CUSTOMER_SERVICE = CustomerService.getInstance();
 
     public static void getAdminResObj(AdminResource adminResObj) {
         AdminResource.adminResObj = adminResObj;
@@ -28,7 +28,7 @@ public class AdminResource {
         return null;
     }
     public void addRoom(String roomNum, Double price, RoomType roomType){
-        resvObj.addRoom(new IRoom() {
+        RESERVATION_SERVICE.addRoom(new IRoom() {
             @Override
             public String getRoomNumber() {
                 return roomNum;
@@ -52,16 +52,16 @@ public class AdminResource {
     }
     public Collection<Room> getAllRooms(){
 
-        return resvObj.getRooms();
+        return RESERVATION_SERVICE.getRooms();
 
     }
     public Collection<Customer> getAllCustomers(){
 
-        return cusObj.getAllCustomers();
+        return CUSTOMER_SERVICE.getAllCustomers();
     }
     public void displayAllReservations(){
         //resvObj.getReservations();
-        for(Reservation res : resvObj.getReservations()) {
+        for(Reservation res : RESERVATION_SERVICE.getReservations()) {
             System.out.println(res);
         }
     }

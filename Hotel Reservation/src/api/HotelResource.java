@@ -2,9 +2,7 @@ package api;
 
 import Service.CustomerService;
 import Service.ReservationService;
-import model.Customer;
-import model.IRoom;
-import model.Reservation;
+import model.*;
 
 
 import java.text.ParseException;
@@ -14,8 +12,8 @@ import java.util.List;
 
 public class HotelResource {
     private static HotelResource hotelResObj;
-    private static final CustomerService custObj = CustomerService.getInstance();
-    private static final ReservationService resObj = ReservationService.getInstance();
+    private static final CustomerService CUSTOMER_SERVICE = CustomerService.getInstance();
+    private static final ReservationService RESERVATION_SERVICE = ReservationService.getInstance();
     public static void getHotelResObj(HotelResource hotelResObj) {
         HotelResource.hotelResObj = hotelResObj;
     }
@@ -30,7 +28,7 @@ public class HotelResource {
     }
     public Customer getCustomer(String email){
             try {
-                return custObj.getCustomer(email);
+                return CUSTOMER_SERVICE.getCustomer(email);
             } catch (Exception e) {
                 System.out.println("Failed to retrieve customer");
                 throw new RuntimeException(e);
@@ -38,24 +36,28 @@ public class HotelResource {
 
     }
     public void createACustomer(String firstName, String lastName, String email){
-        custObj.addCustomer(firstName,lastName,email);
+        CUSTOMER_SERVICE.addCustomer(firstName,lastName,email);
 
     }
     public IRoom getRoom(String roomNumber){
-        return resObj.getARoom(roomNumber);
+        return RESERVATION_SERVICE.getARoom(roomNumber);
 
     }
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){
-        return resObj.reserveARoom(getCustomer(customerEmail),room,checkInDate,checkOutDate);
+        return RESERVATION_SERVICE.reserveARoom(getCustomer(customerEmail),room,checkInDate,checkOutDate);
 
     }
     public Collection<Reservation> getCustomersReservations(String customerEmail) throws Exception{
 
-            Customer customer = custObj.getCustomer(customerEmail);
-            return resObj.getCustomersReservation(customer);
+            Customer customer = CUSTOMER_SERVICE.getCustomer(customerEmail);
+            return RESERVATION_SERVICE.getCustomersReservation(customer);
     }
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
-        return resObj.findRooms(checkIn, checkOut);
+        if(RESERVATION_SERVICE.findRooms(checkIn, checkOut ).isEmpty()){
+            System.out.println("No Rooms Available");
+            MainMenu.Mainmenu();
+        }
+        return RESERVATION_SERVICE.findRooms(checkIn, checkOut );
 
     }
 

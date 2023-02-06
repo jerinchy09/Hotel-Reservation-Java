@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MainMenu {
-    private static HotelResource hotelResource=HotelResource.getInstance();
-    private static ReservationService rsvobj=ReservationService.getInstance();
-    private static CustomerService custobj=CustomerService.getInstance();
+    private static HotelResource HOTEL_RESOURCE=HotelResource.getInstance();
+//    private static ReservationService rsvobj=ReservationService.getInstance();
+    private static CustomerService CUSTOMER_SERVICE=CustomerService.getInstance();
 
 
     private static List<Room> rooms = new ArrayList<>();
@@ -61,12 +61,13 @@ public class MainMenu {
         }
 
     }
-    public static void seeMyReservation(){
+    public static void seeMyReservation() throws Exception {
         System.out.println("Enter email address: ");
         Scanner scanner = new Scanner(System.in);
-        Customer customer = hotelResource.getCustomer(scanner.next());
-        System.out.println(rsvobj.getCustomersReservation(customer));
-        System.out.println(customer.getFirstname()+" "+customer.getLastname() +"has booked Room ");
+        Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
+        System.out.println(HOTEL_RESOURCE.getCustomersReservations(customer.getEmail()));
+
+        //System.out.println(customer.getFirstname()+" "+customer.getLastname() +"has booked Room ");
 
     }
     public static boolean confirmReservation(Optional<IRoom> roomChosen){
@@ -81,7 +82,7 @@ public class MainMenu {
         System.out.println("Enter email address:");
         String email= scanner.next();
 
-        hotelResource.createACustomer(firstname, lastname, email);
+        HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
         scanner.close();
     }
 
@@ -90,7 +91,7 @@ public class MainMenu {
             System.out.println("Please Enter your Email address: ");
             Scanner scanner = new Scanner(System.in);
 
-            Customer customer = hotelResource.getCustomer(scanner.next());
+            Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
             System.out.println("Enter check-in date - format yyyy-mm-dd");
@@ -101,13 +102,14 @@ public class MainMenu {
             Date checkOutDate = dateFormat.parse(checkOut);
 
             System.out.println("Which room would you like to book? Enter room Id");
+            //Recommended room
+            System.out.println(HOTEL_RESOURCE.findARoom(checkInDate,checkOutDate));
 
-            System.out.println(hotelResource.findARoom(checkInDate,checkOutDate));
             String roomId = scanner.next();
-            IRoom room = hotelResource.getRoom(roomId);
+            IRoom room = HOTEL_RESOURCE.getRoom(roomId);
 
-            hotelResource.bookARoom(  customer.getEmail(), room, checkInDate, checkOutDate);
-            System.out.println("Room "+roomId+ " is booked for " + custobj.getCustomer(customer.getEmail()));
+            HOTEL_RESOURCE.bookARoom(  customer.getEmail(), room, checkInDate, checkOutDate);
+            //System.out.println("Room "+roomId+ " is booked for " + custobj.getCustomer(customer.getEmail()));
 
         } catch (Exception e) {
             System.out.println("Exception is: " + e.toString());
