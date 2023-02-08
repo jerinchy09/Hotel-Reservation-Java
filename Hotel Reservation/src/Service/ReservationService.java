@@ -89,13 +89,5 @@ public class ReservationService {
         return customerReservation;
     }
 
-    public boolean isRoomAvailable(String roomNumber){
-        for (Room room : rooms) {
-            if (room.getRoomNumber() == roomNumber && room.isAvailable()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 }
