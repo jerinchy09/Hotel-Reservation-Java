@@ -52,21 +52,15 @@ public class MainMenu {
                 }
             }
             catch (Exception e){
-                System.out.println("Invalid Input");
-                scanner.next();
 
             }
         }
-
     }
     public static void seeMyReservation() throws Exception {
         System.out.println("Enter email address: ");
         Scanner scanner = new Scanner(System.in);
         Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
         System.out.println(HOTEL_RESOURCE.getCustomersReservations(customer.getEmail()));
-
-        //System.out.println(customer.getFirstname()+" "+customer.getLastname() +"has booked Room ");
-
     }
     public static boolean confirmReservation(Optional<IRoom> roomChosen){
         return false;
@@ -88,9 +82,7 @@ public class MainMenu {
         try {
             System.out.println("Please Enter your Email address: ");
             Scanner scanner = new Scanner(System.in);
-
             Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
             System.out.println("Enter check-in date - format yyyy-mm-dd");
             String checkIn = scanner.next();
@@ -99,20 +91,14 @@ public class MainMenu {
             String checkOut = scanner.next();
             Date checkOutDate = dateFormat.parse(checkOut);
 
-
-
-                System.out.println("Which room would you like to book? Enter room Id");
+            System.out.println("Which room would you like to book? Enter room Id");
                 //Recommended room
-
-                Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
-                List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
-                System.out.println(available_rooms);
+            Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
+            List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
+            System.out.println(available_rooms);
             while(true) {
-
                 String roomId = scanner.next();
-
                 for (String rm : availableRoomNo) {
-
                         if (rm.equals(roomId)) {
                             IRoom room = HOTEL_RESOURCE.getRoom(roomId);
                             HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
@@ -120,15 +106,10 @@ public class MainMenu {
                         } else {
                             System.out.println("Please enter a valid room ID");
                         }
-
                     }
                 }
-
-
         } catch (Exception e) {
             System.out.println("Exception is: " + e.toString());
         }
     }
-
-
 }

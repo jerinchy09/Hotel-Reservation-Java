@@ -67,13 +67,16 @@ public class AdminMenu {
 
         System.out.println("Enter room Price: ");
         Double inputroomPrice = sc.nextDouble();
-
-        System.out.println("Enter room Type: ");
+        System.out.println("Enter room Type: (Please type Single or Double)");
         String inputroomType = sc.next();
-
-
         RoomType roomtype = RoomType.valueOf(inputroomType.toUpperCase());
-        ADMIN_RESOURCE.addRoom(inputroomNumber, inputroomPrice,roomtype);
+        if(roomtype.equals(RoomType.SINGLE) || roomtype.equals(RoomType.DOUBLE) ){
+            ADMIN_RESOURCE.addRoom(inputroomNumber, inputroomPrice, roomtype);
+
+        }
+        else{
+            System.out.println("Please enter 'Single' or 'Double'");
+        }
     }
     public static void seeAllReservation(){
         ADMIN_RESOURCE.displayAllReservations();
