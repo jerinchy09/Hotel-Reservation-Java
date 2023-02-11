@@ -30,26 +30,34 @@ public class MainMenu {
             System.out.println("5. Exit");
             System.out.println("(Only Press number 1-5)\n");
             try {
-                int response = scanner.nextInt();
-                switch (response) {
-                    case 1:
-                        finsAndReserveARoom();
-                        break;
-                    case 2:
-                        seeMyReservation();
-                        break;
-                    case 3:
-                        createAnAccount();
-                        break;
-                    case 4:
-                        AdminMenu ad = new AdminMenu();
-                        ad.AdminMenu();
-                        break;
-                    case 5:
-                        System.exit(0);
-                        //break;
-                    default:
-                        System.out.println("Invalid Input");
+                String response = scanner.next();
+                int resInt =Integer.parseInt(response);
+                try {
+                    if (resInt >= 1 && resInt <= 5) {
+                        switch (resInt) {
+                            case 1:
+                                finsAndReserveARoom();
+                                break;
+                            case 2:
+                                seeMyReservation();
+                                break;
+                            case 3:
+                                createAnAccount();
+                                break;
+                            case 4:
+                                AdminMenu ad = new AdminMenu();
+                                ad.AdminMenu();
+                                break;
+                            case 5:
+                                System.exit(0);
+                                //break;
+                            default:
+                                System.out.println("Invalid Input");
+                        }
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Invalid Input");
+
                 }
             } catch (Exception e) {
                 System.out.println("Invalid input");
@@ -100,18 +108,27 @@ public class MainMenu {
         try {
             System.out.println("Please Enter your Email address: ");
             Scanner scanner = new Scanner(System.in);
-            Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
+            String email = scanner.next();
+
+            Customer customer = HOTEL_RESOURCE.getCustomer(email);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
             System.out.println("Enter check-in date - format yyyy-mm-dd");
             String checkIn = scanner.next();
-            Date checkInDate = dateFormat.parse(checkIn);
+            Calendar cal = Calendar.getInstance();
+            cal.setLenient(false);
+            Date checkInDate =dateFormat.parse(checkIn);
+
+           // Date checkInDate = cal.setTime(checkInD);
             System.out.println("Enter check-Out date - format yyyy-mm-dd");
             String checkOut = scanner.next();
             Date checkOutDate = dateFormat.parse(checkOut);
 
+
+            Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
+
+
             System.out.println("Which room would you like to book? Enter room Id");
             //Recommended room
-            Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
             List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
             System.out.println(available_rooms);
             while (true) {

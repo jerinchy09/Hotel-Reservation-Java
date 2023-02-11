@@ -28,33 +28,37 @@ public class AdminMenu {
             System.out.println("(Only Press number 1-5)");
 
             Scanner scanner = new Scanner(System.in);
-            int response = scanner.nextInt();
+            String response = scanner.next();
+            int resInt =Integer.parseInt(response);
 
-            if ((response >= 1) && (response <= 5)) {
-                switch (response) {
-                    case 1:
-                        ADMIN_RESOURCE.displayAllCustomers();
-                        break;
-                    case 2:
+            try{
+                if (resInt >= 1 && resInt <= 5) {
+                    switch (resInt) {
+                        case 1:
+                            ADMIN_RESOURCE.displayAllCustomers();
+                            break;
+                        case 2:
 
-                        ADMIN_RESOURCE.getAllRooms();
-                        break;
-                    case 3:
-                        seeAllReservation();
-                        break;
-                    case 4:
-                        addroom();
-                        break;
-                    case 5:
-                        MainMenu Mmenu = new MainMenu();
-                        Mmenu.Mainmenu();
-                        break;
+                            ADMIN_RESOURCE.getAllRooms();
+                            break;
+                        case 3:
+                            seeAllReservation();
+                            break;
+                        case 4:
+                            addroom();
+                            break;
+                        case 5:
+                            MainMenu Mmenu = new MainMenu();
+                            Mmenu.Mainmenu();
+                            break;
 
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + response);
-                }
-            } else throw new IllegalArgumentException("Input not Valid");
-
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + response);
+                    }
+                } else throw new IllegalArgumentException("Input not Valid ");
+            }catch (NumberFormatException e){
+                System.out.println("Invalid Input");
+            }
         }
     }
     public static void addroom(){

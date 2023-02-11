@@ -59,13 +59,7 @@ public class ReservationService {
 
     }
     public Collection<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
-//        ArrayList<IRoom> noRooms = new ArrayList<>();
-//        if(CheckInDate.before(new Date()) || CheckOutDate.before(new Date())){
-//            return noRooms;
-//        }
-//        if(CheckInDate.after(CheckOutDate) || CheckOutDate.equals(CheckInDate)){
-//            return noRooms;
-//        }
+
 
         List<IRoom> unavailableRooms = reservations.stream()
                                                   .filter(r->CheckOutDate.after(r.getCheckInDate()) && CheckInDate.before(r.getCheckOutDate()))

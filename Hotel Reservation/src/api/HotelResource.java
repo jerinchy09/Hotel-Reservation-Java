@@ -28,7 +28,11 @@ public class HotelResource {
     }
     public Customer getCustomer(String email){
             try {
+                if(CUSTOMER_SERVICE.getCustomer(email)==null){
+                    MainMenu.Mainmenu();
+                }
                 return CUSTOMER_SERVICE.getCustomer(email);
+
             } catch (Exception e) {
                 System.out.println("Failed to retrieve customer");
                 throw new RuntimeException(e);
@@ -53,6 +57,12 @@ public class HotelResource {
             return RESERVATION_SERVICE.getCustomersReservation(customer);
     }
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
+        Date today = new Date();
+        if(checkOut.before(checkIn) || checkIn.after(checkOut) || checkIn.equals(checkOut)|| checkIn.before(today) || checkOut.before(today)){
+            System.out.println("Not a valid check-in/check-out date");
+            MainMenu.Mainmenu();
+        }
+
         if(RESERVATION_SERVICE.findRooms(checkIn, checkOut ).isEmpty()){
             System.out.println("No Rooms Available");
             MainMenu.Mainmenu();

@@ -1,5 +1,6 @@
 package Service;
 
+import api.HotelResource;
 import model.Customer;
 import model.MainMenu;
 
@@ -7,6 +8,7 @@ import java.util.*;
 
 public class CustomerService {
     private static CustomerService custObj;
+    private static HotelResource hotel_resource;
     private Map<String, Customer> customerMap = new HashMap<>();
 
     private CustomerService(){
@@ -30,8 +32,15 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String customerEmail) throws Exception {
-        if (customerEmail == null) {
-            throw new Exception("String is null");
+        boolean custemail = false;
+        for(Map.Entry<String,Customer> cust : customerMap.entrySet()){
+            custemail =cust.getValue().getEmail().contains(customerEmail);
+
+        }
+
+        if (customerEmail == null && custemail == false) {
+            throw new Exception("Email is not valid");
+
         }
        return customerMap.get(customerEmail);
 
