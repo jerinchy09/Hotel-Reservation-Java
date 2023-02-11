@@ -39,8 +39,8 @@ public class HotelResource {
         CUSTOMER_SERVICE.addCustomer(firstName,lastName,email);
 
     }
-    public IRoom getRoom(String roomNumber){
-        return RESERVATION_SERVICE.getARoom(roomNumber);
+    public IRoom getRoom(String roomNumber) throws Exception {
+            return RESERVATION_SERVICE.getARoom(roomNumber);
 
     }
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){

@@ -6,12 +6,13 @@ import api.HotelResource;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MainMenu {
-    private static HotelResource HOTEL_RESOURCE=HotelResource.getInstance();
-//    private static ReservationService rsvobj=ReservationService.getInstance();
-    private static CustomerService CUSTOMER_SERVICE=CustomerService.getInstance();
+    private static HotelResource HOTEL_RESOURCE = HotelResource.getInstance();
+    //    private static ReservationService rsvobj=ReservationService.getInstance();
+    private static CustomerService CUSTOMER_SERVICE = CustomerService.getInstance();
 
 
     private static List<Room> rooms = new ArrayList<>();
@@ -29,56 +30,73 @@ public class MainMenu {
             System.out.println("5. Exit");
             System.out.println("(Only Press number 1-5)\n");
             try {
-                    int response = scanner.nextInt();
-                    switch (response) {
-                        case 1:
-                            finsAndReserveARoom();
-                            break;
-                        case 2:
-                            seeMyReservation();
-                            break;
-                        case 3:
-                            createAnAccount();
-                            break;
-                        case 4:
-                            AdminMenu ad = new AdminMenu();
-                            ad.AdminMenu();
-                            break;
-                        case 5:
-                            System.exit(0);
-                            //break;
-                        default:
-                            System.out.println("Invalid Input");
+                int response = scanner.nextInt();
+                switch (response) {
+                    case 1:
+                        finsAndReserveARoom();
+                        break;
+                    case 2:
+                        seeMyReservation();
+                        break;
+                    case 3:
+                        createAnAccount();
+                        break;
+                    case 4:
+                        AdminMenu ad = new AdminMenu();
+                        ad.AdminMenu();
+                        break;
+                    case 5:
+                        System.exit(0);
+                        //break;
+                    default:
+                        System.out.println("Invalid Input");
                 }
-            }
-            catch (Exception e){
-
+            } catch (Exception e) {
+                System.out.println("Invalid input");
             }
         }
     }
+
     public static void seeMyReservation() throws Exception {
         System.out.println("Enter email address: ");
         Scanner scanner = new Scanner(System.in);
         Customer customer = HOTEL_RESOURCE.getCustomer(scanner.next());
         System.out.println(HOTEL_RESOURCE.getCustomersReservations(customer.getEmail()));
     }
-    public static boolean confirmReservation(Optional<IRoom> roomChosen){
-        return false;
-    }
-    public static void createAnAccount(){
+
+//  public static boolean confirmReservation(Optional<IRoom> roomChosen) {
+//        return false;
+//    }
+
+    public static void createAnAccount() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter first name:");
-        String firstname= scanner.next();
+        String firstname = scanner.next();
         System.out.println("Enter last name:");
-        String lastname= scanner.next();
+        String lastname = scanner.next();
         System.out.println("Enter email address:");
-        String email= scanner.next();
 
-        HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
+        Boolean i = true;
+        while (i) {
+            try {
+                String email = scanner.next();
+                String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+                Pattern pattern = Pattern.compile(emailRegex);
+                boolean res = pattern.matcher(email).matches();
+                if (res == true) {
+                    i = false;
+                    HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
+
+                } else throw new IllegalArgumentException();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Please enter a valid email.");
+            }
+
+        }
         scanner.close();
     }
 
-    private static void finsAndReserveARoom(){
+    private static void finsAndReserveARoom() {
         try {
             System.out.println("Please Enter your Email address: ");
             Scanner scanner = new Scanner(System.in);
@@ -92,24 +110,29 @@ public class MainMenu {
             Date checkOutDate = dateFormat.parse(checkOut);
 
             System.out.println("Which room would you like to book? Enter room Id");
-                //Recommended room
+            //Recommended room
             Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
             List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
             System.out.println(available_rooms);
-            while(true) {
+            while (true) {
                 String roomId = scanner.next();
                 for (String rm : availableRoomNo) {
-                        if (rm.equals(roomId)) {
-                            IRoom room = HOTEL_RESOURCE.getRoom(roomId);
-                            HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
-                            MainMenu.Mainmenu();
-                        } else {
-                            System.out.println("Please enter a valid room ID");
-                        }
+                    if (rm.equals(roomId)) {
+                        IRoom room = HOTEL_RESOURCE.getRoom(roomId);
+                        HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
+                        MainMenu.Mainmenu();
+                    } else {
+                        System.out.println("Please enter a valid room ID");
                     }
                 }
+            }
         } catch (Exception e) {
             System.out.println("Exception is: " + e.toString());
         }
+    }
+
+    private static String emailValidation(String email) {
+
+        return null;
     }
 }

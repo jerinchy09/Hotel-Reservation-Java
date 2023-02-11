@@ -10,6 +10,19 @@ public class Room implements IRoom{
    // private RoomType enumeration;
     private boolean isAvailable;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room)) return false;
+        Room room = (Room) o;
+        return isFree == room.isFree && isAvailable == room.isAvailable && Objects.equals(roomNumber, room.roomNumber) && Objects.equals(roomprice, room.roomprice) && roomType == room.roomType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, roomprice, roomType, isFree, isAvailable);
+    }
+
     public Room(String roomNumber, Double price, RoomType roomType){
         this.roomNumber = roomNumber;
         this.roomprice = price;
@@ -50,20 +63,6 @@ public class Room implements IRoom{
                 ", roomprice=" + roomprice +
                 ", roomType=" + roomType +
                 '}';
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return roomNumber.equals(room.roomNumber) && roomType == room.roomType;
-    }
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(roomNumber, roomType);
     }
 
 

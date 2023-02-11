@@ -3,14 +3,15 @@ package Service;
 import model.*;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ReservationService {
     private static ReservationService resObj;
-    private static List<Room> rooms = new ArrayList<>();
+    private static Set<Room> rooms = new HashSet<>();
     private final static Set<Reservation> reservations = new HashSet<>();
 
-    public List<Room> getRooms() {
+    public Set<Room> getRooms() {
         System.out.println(rooms);
         return rooms;
     }
@@ -31,7 +32,6 @@ public class ReservationService {
 
             Room rm = new Room(room.getRoomNumber(), room.getRoomPrice(), room.getRoomType());
             rooms.add(rm);
-
             System.out.println("Room Added" );
             AdminMenu.AdminMenu();
 
@@ -39,14 +39,13 @@ public class ReservationService {
             System.out.println("Please try again.");
         }
     }
-    public IRoom getARoom(String roomId){
-        for(Room rm : rooms ) {
-            if(rm.getRoomNumber().equals(roomId)){
-                return rm;
+    public IRoom getARoom(String roomId) throws Exception {
+        for (IRoom room : rooms) {
+            if (room.getRoomNumber().equals(roomId)) {
+                return room;
             }
         }
         return null;
-
     }
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
@@ -75,8 +74,6 @@ public class ReservationService {
         return rooms.stream()
                 .filter(r->!unavailableRooms.contains(r))
                 .collect(Collectors.toCollection(ArrayList::new));
-
-
     }
     public Collection<Reservation> getCustomersReservation(Customer customer){
         List<Reservation> customerReservation = new ArrayList<>();
