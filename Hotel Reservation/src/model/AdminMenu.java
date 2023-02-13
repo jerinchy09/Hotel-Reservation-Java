@@ -83,8 +83,6 @@ public class AdminMenu {
                 else{
                     throw new IllegalArgumentException();
                 }
-
-
             } catch (IllegalArgumentException e) {
                 System.out.println("Please enter a valid room number.");
             } catch (Exception e) {

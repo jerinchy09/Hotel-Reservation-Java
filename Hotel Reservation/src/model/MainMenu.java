@@ -3,6 +3,7 @@ package model;
 import Service.CustomerService;
 import Service.ReservationService;
 import api.HotelResource;
+import com.sun.tools.javac.Main;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,6 +17,8 @@ public class MainMenu {
 
 
     private static List<Room> rooms = new ArrayList<>();
+    private static List<Customer> cust = new ArrayList<>();
+
 
     public static void Mainmenu() {
         final Scanner scanner = new Scanner(System.in);
@@ -93,7 +96,18 @@ public class MainMenu {
                 boolean res = pattern.matcher(email).matches();
                 if (res == true) {
                     i = false;
-                    HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
+                    if(CUSTOMER_SERVICE.getAllCustomers().isEmpty()){
+                        HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
+                    }
+                    for(Customer cus:CUSTOMER_SERVICE.getAllCustomers()) {
+                        if (cus.getEmail().equals(email)) {
+                            System.out.println("This email exists");
+                            Mainmenu();
+                        }else
+                            HOTEL_RESOURCE.createACustomer(firstname, lastname, email);
+
+                    }
+
 
                 } else throw new IllegalArgumentException();
             } catch (IllegalArgumentException e) {
@@ -123,24 +137,33 @@ public class MainMenu {
             String checkOut = scanner.next();
             Date checkOutDate = dateFormat.parse(checkOut);
 
-
             Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
 
-
             System.out.println("Which room would you like to book? Enter room Id");
-            //Recommended room
-            List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
+            //Recommended rooms
             System.out.println(available_rooms);
+            List<String> availableRoomNo = new ArrayList<>();
+            for(IRoom room: available_rooms){
+                availableRoomNo.add(room.getRoomNumber());
+            }
+
+//            List<String> availableRoomNo = available_rooms.stream().map(room -> room.getRoomNumber()).collect(Collectors.toList());
+//
             while (true) {
-                String roomId = scanner.next();
-                for (String rm : availableRoomNo) {
-                    if (rm.equals(roomId)) {
-                        IRoom room = HOTEL_RESOURCE.getRoom(roomId);
-                        HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
-                        MainMenu.Mainmenu();
-                    } else {
-                        System.out.println("Please enter a valid room ID");
+                String roomId =scanner.next();
+                try {
+                    for (String rm : availableRoomNo) {
+                        if (rm.equals(roomId)) {
+                            IRoom room = HOTEL_RESOURCE.getRoom(roomId);
+                            HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
+                            MainMenu.Mainmenu();
+                        }
+                        else {
+                            throw new IllegalArgumentException();
+                        }
                     }
+                }catch (IllegalArgumentException e) {
+                    System.out.println("The input is not a valid room Number.");
                 }
             }
         } catch (Exception e) {

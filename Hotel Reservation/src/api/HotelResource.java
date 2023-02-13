@@ -57,12 +57,10 @@ public class HotelResource {
             return RESERVATION_SERVICE.getCustomersReservation(customer);
     }
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
-        Date today = new Date();
-        if(checkOut.before(checkIn) || checkIn.after(checkOut) || checkIn.equals(checkOut)|| checkIn.before(today) || checkOut.before(today)){
+        if(checkOut.before(checkIn) || checkIn.after(checkOut) || checkIn.equals(checkOut)){
             System.out.println("Not a valid check-in/check-out date");
             MainMenu.Mainmenu();
         }
-
         if(RESERVATION_SERVICE.findRooms(checkIn, checkOut ).isEmpty()){
             System.out.println("No Rooms Available");
             MainMenu.Mainmenu();

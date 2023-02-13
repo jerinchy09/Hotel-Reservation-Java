@@ -25,9 +25,12 @@ public class Reservation {
     }
 
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
+//    public boolean isAvailable(Date checkInDate , Date checkOutDate) {
+//        if(checkInDate.equals(checkOutDate)){
+//        isAvailable=true;
+//        }
+//        return isAvailable;
+//    }
 
     public Reservation(Customer customer, IRoom room, Date checkIn, Date checkOut){
             this.customer = customer;
