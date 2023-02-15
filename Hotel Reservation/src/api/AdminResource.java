@@ -48,6 +48,11 @@ public class AdminResource {
             public boolean isFree() {
                 return false;
             }
+
+            @Override
+            public boolean isAvailable() {
+                return true;
+            }
         });
     }
     public Collection<Room> getAllRooms(){

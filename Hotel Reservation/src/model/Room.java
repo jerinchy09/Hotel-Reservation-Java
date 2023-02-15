@@ -7,9 +7,7 @@ public class Room implements IRoom{
     private final Double roomprice;
     private final RoomType roomType;
     private boolean isFree;
-   // private RoomType enumeration;
     private boolean isAvailable;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -22,27 +20,28 @@ public class Room implements IRoom{
     public int hashCode() {
         return Objects.hash(roomNumber, roomprice, roomType, isFree, isAvailable);
     }
-
     public Room(String roomNumber, Double price, RoomType roomType){
         this.roomNumber = roomNumber;
         this.roomprice = price;
         this.roomType = roomType;
-        boolean isAvailable = true;
+        this.isAvailable=true;
         if(roomprice == 0){
             isFree = true;
         }else{
             isFree = false;
         }
-
     }
-
+    @Override
     public boolean isAvailable() {
         return isAvailable;
     }
-
     public String getRoomNumber() {
         return roomNumber;
     }
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
     @Override
     public Double getRoomPrice() {
         return roomprice;
@@ -51,7 +50,6 @@ public class Room implements IRoom{
     public RoomType getRoomType() {
         return roomType;
     }
-
     @Override
     public boolean isFree() {
         return isFree;
@@ -62,8 +60,8 @@ public class Room implements IRoom{
                 "roomNumber='" + roomNumber + '\'' +
                 ", roomprice=" + roomprice +
                 ", roomType=" + roomType +
+                "room Avaibility="+ isAvailable()+
                 '}';
     }
-
 
 }

@@ -6,9 +6,9 @@ import model.*;
 
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+
 
 public class HotelResource {
     private static HotelResource hotelResObj;
@@ -23,6 +23,7 @@ public class HotelResource {
         }
         return hotelResObj;
     }
+
     private HotelResource(){
 
     }
@@ -47,28 +48,40 @@ public class HotelResource {
             return RESERVATION_SERVICE.getARoom(roomNumber);
 
     }
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){
+    public Reservation bookARoom(String customerEmail, IRoom room, LocalDate checkInDate, LocalDate checkOutDate){
         return RESERVATION_SERVICE.reserveARoom(getCustomer(customerEmail),room,checkInDate,checkOutDate);
 
     }
     public Collection<Reservation> getCustomersReservations(String customerEmail) throws Exception{
 
-            Customer customer = CUSTOMER_SERVICE.getCustomer(customerEmail);
-            return RESERVATION_SERVICE.getCustomersReservation(customer);
+        Customer customer = CUSTOMER_SERVICE.getCustomer(customerEmail);
+        return RESERVATION_SERVICE.getCustomersReservation(customer);
     }
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) throws ParseException {
-        if(checkOut.before(checkIn) || checkIn.after(checkOut) || checkIn.equals(checkOut)){
-            System.out.println("Not a valid check-in/check-out date");
-            MainMenu.Mainmenu();
-        }
-        if(RESERVATION_SERVICE.findRooms(checkIn, checkOut ).isEmpty()){
-            System.out.println("No Rooms Available");
-            MainMenu.Mainmenu();
-        }
+    public Collection<IRoom> findARoom(LocalDate checkIn, LocalDate checkOut) throws ParseException {
         return RESERVATION_SERVICE.findRooms(checkIn, checkOut );
-
     }
+    public Boolean DateValidation(LocalDate checkin , LocalDate checkout){
+        boolean validate;
+        LocalDate today = LocalDate.now();
+        if(!checkin.equals(checkout)
+                    &&
+                    checkin.isBefore(checkout)
+                    &&
+                (checkin.isAfter(today) || checkin.isEqual(today))
+                    &&
+                    checkout.isAfter(today)
+                    &&
+                    checkout.isAfter(checkin)
+        ){
+            validate= true;
+        }else {
+            validate= false;
+            System.out.println("Not a valid date");
+            MainMenu.Mainmenu();
+        }
 
+        return validate;
+    }
 
 }
 

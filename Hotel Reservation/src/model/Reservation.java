@@ -1,15 +1,15 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
 public class Reservation {
     private final Customer customer;
     private final IRoom room;
-    private final Date CheckInDate;
-    private final Date CheckOutDate;
+    private final LocalDate CheckInDate;
+    private final LocalDate CheckOutDate;
 
-    private boolean isAvailable;
 
     @Override
     public boolean equals(Object o) {
@@ -32,13 +32,23 @@ public class Reservation {
 //        return isAvailable;
 //    }
 
-    public Reservation(Customer customer, IRoom room, Date checkIn, Date checkOut){
+    public Reservation(Customer customer, IRoom room, LocalDate checkIn, LocalDate checkOut){
             this.customer = customer;
             this.room = room;
             this.CheckInDate = checkIn;
             this.CheckOutDate = checkOut;
-            isAvailable = false;
+            //this.isAvailable = isAvailable;
+
+
     }
+//
+//    public void setAvailable(boolean available) {
+//        isAvailable = available;
+//    }
+//
+//    public boolean isAvailable(){
+//            return isAvailable;
+//    }
 
     public Customer getCustomer() {
         return customer;
@@ -46,10 +56,10 @@ public class Reservation {
     public IRoom getRoom() {
         return room;
     }
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return CheckInDate;
     }
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return CheckOutDate;
     }
     @Override

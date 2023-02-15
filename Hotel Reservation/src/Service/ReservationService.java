@@ -3,6 +3,7 @@ package Service;
 import api.HotelResource;
 import model.*;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class ReservationService {
         return null;
     }
 
-    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
+    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate) {
         Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
         reservations.add(reservation);
 
@@ -61,23 +62,34 @@ public class ReservationService {
 
     }
 
-    public Collection<IRoom> findRooms(Date CheckInDate, Date CheckOutDate) {
+    public Collection<IRoom> findRooms(LocalDate CheckInDate, LocalDate CheckOutDate) {
         List<Reservation> filterReservations = new ArrayList<>();
         //.stream
-
-        //available rooms
         for (Reservation res : reservations) {
             //.filter
-            if ((CheckOutDate.after(res.getCheckInDate()))
+            //System.out.println(res.getRoom().isAvailable());
+
+            if ((CheckOutDate.isAfter(res.getCheckInDate())
+                    || CheckOutDate.isEqual(res.getCheckInDate()))
                     &&
-                    CheckInDate.before(res.getCheckOutDate())
+                    (CheckInDate.isBefore(res.getCheckOutDate())
+                    ||CheckInDate.isBefore(res.getCheckOutDate())
+                    || CheckInDate.isEqual(res.getCheckOutDate()))
                     &&
-                    !CheckInDate.equals(CheckOutDate)
-                    &&
-                    CheckInDate.before(CheckOutDate)
+                    res.getRoom().isAvailable()
+
 
             ){
                 filterReservations.add(res);
+            } else if (CheckInDate.isAfter(res.getCheckOutDate())
+                    ||CheckInDate.isBefore(res.getCheckOutDate())
+                    || CheckInDate.isEqual(res.getCheckOutDate())){
+                Room rm = new Room(res.getRoom().getRoomNumber(), res.getRoom().getRoomPrice(), res.getRoom().getRoomType());
+                rooms.add(rm);
+            }
+            else {
+                    System.out.println("Not a valid check-in/check-out date");
+                    MainMenu.Mainmenu();
             }
 
         }
@@ -106,4 +118,4 @@ public class ReservationService {
         return customerReservation;
     }
 
-}
+ }

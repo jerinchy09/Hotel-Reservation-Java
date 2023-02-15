@@ -6,6 +6,7 @@ import api.HotelResource;
 import com.sun.tools.javac.Main;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -14,7 +15,8 @@ public class MainMenu {
     private static HotelResource HOTEL_RESOURCE = HotelResource.getInstance();
     //    private static ReservationService rsvobj=ReservationService.getInstance();
     private static CustomerService CUSTOMER_SERVICE = CustomerService.getInstance();
-
+    private static LocalDate newcheckin;
+    private static LocalDate newcheckout;
 
     private static List<Room> rooms = new ArrayList<>();
     private static List<Customer> cust = new ArrayList<>();
@@ -85,7 +87,7 @@ public class MainMenu {
         String firstname = scanner.next();
         System.out.println("Enter last name:");
         String lastname = scanner.next();
-        System.out.println("Enter email address:");
+        System.out.println("Enter email address: (eg. john@email.com)");
 
         Boolean i = true;
         while (i) {
@@ -128,17 +130,22 @@ public class MainMenu {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
             System.out.println("Enter check-in date - format yyyy-mm-dd");
             String checkIn = scanner.next();
-            Calendar cal = Calendar.getInstance();
-            cal.setLenient(false);
-            Date checkInDate =dateFormat.parse(checkIn);
-
+            LocalDate checkInDate = LocalDate.parse(checkIn);
+            //Calendar cal = Calendar.getInstance();
+            //cal.setLenient(false);
+            //LocalDate checkInDate =dateFormat.parse(checkIn);
            // Date checkInDate = cal.setTime(checkInD);
             System.out.println("Enter check-Out date - format yyyy-mm-dd");
             String checkOut = scanner.next();
-            Date checkOutDate = dateFormat.parse(checkOut);
-
+            LocalDate checkOutDate = LocalDate.parse(checkOut);
+            HOTEL_RESOURCE.DateValidation(checkInDate,checkOutDate);
             Collection<IRoom> available_rooms = HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);
-
+            if(available_rooms.isEmpty()){
+                System.out.println("No Rooms Available. \nAvailable rooms for reservations ADDING 7days of your check-in, check-out date.");
+                checkInDate = checkInDate.plusDays(7);
+                checkOutDate= checkOutDate.plusDays(7);
+                available_rooms=HOTEL_RESOURCE.findARoom(checkInDate, checkOutDate);    //MainMenu.Mainmenu();
+            }
             System.out.println("Which room would you like to book? Enter room Id");
             //Recommended rooms
             System.out.println(available_rooms);
@@ -151,16 +158,20 @@ public class MainMenu {
 //
             while (true) {
                 String roomId =scanner.next();
+                String RoomNoRegex = "[0-9]+";
+                Pattern pattern = Pattern.compile(RoomNoRegex);
+                boolean res = pattern.matcher(roomId).matches();
+
                 try {
                     for (String rm : availableRoomNo) {
-                        if (rm.equals(roomId)) {
+                        if (rm.contains(roomId) && res) {
                             IRoom room = HOTEL_RESOURCE.getRoom(roomId);
                             HOTEL_RESOURCE.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
                             MainMenu.Mainmenu();
                         }
-                        else {
-                            throw new IllegalArgumentException();
-                        }
+//                        else {
+//                            throw new IllegalArgumentException();
+//                        }
                     }
                 }catch (IllegalArgumentException e) {
                     System.out.println("The input is not a valid room Number.");
